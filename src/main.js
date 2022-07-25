@@ -11,11 +11,11 @@ const api = axios.create({
 });
 
 
-async function trendingPreview() {
+async function getTrendingPreview() {
     const { data } = await api('trending/movie/day');
 
     const movies = data.results
-    console.log(data) 
+    console.log(movies) 
 
     movies.forEach(movie => {
         
@@ -45,7 +45,7 @@ async function trendingPreview() {
 
 
 
-async function categoriesPreview(){
+async function getCategoriesPreview(){
 
     const { data } = await api('genre/movie/list');
 
@@ -54,7 +54,7 @@ async function categoriesPreview(){
 
     categories.forEach(genre => {
 
-        const previewCategoriesList = document.querySelector('#categoriesPreview  .categoriesPreview-list');
+        //const previewCategoriesList = document.querySelector('#categoriesPreview  .categoriesPreview-list');
 
         const categoriesContainer = document.createElement('div');
         categoriesContainer.classList.add('category-container');
@@ -64,7 +64,8 @@ async function categoriesPreview(){
         categoriesTitle.setAttribute('id','id' + genre.id);
         const categoryName = document.createTextNode(genre.name);
 
-        previewCategoriesList.appendChild(categoriesContainer);
+        categoriesPreviewSection.appendChild(categoriesPreviewList);
+        categoriesPreviewList.appendChild(categoriesContainer)
         categoriesContainer.appendChild(categoriesTitle);
         categoriesTitle.appendChild(categoryName)
 

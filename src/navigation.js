@@ -14,6 +14,7 @@ arrowBtn.addEventListener('click', () =>{
 
 window.addEventListener('hashchange',navigator,false);
 window.addEventListener('hashchange',navigator,false);
+window.scrollTo(0,0)
 
 function navigator(){
 
@@ -99,10 +100,23 @@ function categoriesPage(){
     searchForm.classList.add('inactive');
 
     trendingPreviewSection.classList.add('inactive');
-    categoriesPreviewSection.classList.remove('inactive');
+    categoriesPreviewSection.classList.add('inactive');
 
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
+
+    // [#categories , id-name]
+    const [_ ,categoryData] = location.hash.split('=');
+    var [categoryId , categoryName] = categoryData.split('-');
+
+    console.log(categoryId)
+
+    headerCategoryTitle.innerHTML = categoryName;
+
+    getMoviesByCategory(categoryId);
+ 
+
+
 };
 
 function homePage(){

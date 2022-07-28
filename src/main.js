@@ -10,6 +10,35 @@ const api = axios.create({
     },
 });
 
+// helpers functions
+
+function createMovies(movie, container){
+
+
+    container.innerHTML = '';
+
+    movie.forEach(movie => {
+        
+        
+        const movieContainer = document.createElement('div');
+        movieContainer.classList.add('movie-container');
+
+        const movieImg = document.createElement('img');
+        movieImg.classList.add('movie-img');
+        movieImg.setAttribute('alt', movie.title);
+        movieImg.setAttribute('src',
+            `https://image.tmdb.org/t/p/w300/${movie.poster_path}`
+        );
+
+        movieContainer.appendChild(movieImg);
+        container.appendChild(movieContainer);
+
+    })};
+
+
+
+
+// calling api 
 
 async function getTrendingPreview() {
     const { data } = await api('trending/movie/day');
@@ -17,31 +46,8 @@ async function getTrendingPreview() {
     const movies = data.results
     console.log(movies) 
 
-    trendingMoviesPreviewList.innerHTML = '';
 
-    movies.forEach(movie => {
-        
-            //const trendingPreviewMoviesContainer = document.querySelector('#trendingPreview .trendingPreview-movieList');
-
-
-
-            const movieContainer = document.createElement('div');
-            movieContainer.classList.add('movie-container');
-
-            const movieImg = document.createElement('img');
-            movieImg.classList.add('movie-img');
-            movieImg.setAttribute('alt', movie.title);
-            movieImg.setAttribute('src',
-                `https://image.tmdb.org/t/p/w300/${movie.poster_path}`
-            );
-
-            movieContainer.appendChild(movieImg);
-            trendingMoviesPreviewList.appendChild(movieContainer);
-
-
-
-
-        });
+  createMovies(movies,trendingMoviesPreviewList);
 
 };
 
@@ -66,7 +72,12 @@ async function getCategoriesPreview(){
         const categoriesTitle = document.createElement('h3');
         categoriesTitle.classList.add('category-title');
         categoriesTitle.setAttribute('id','id' + genre.id);
+        categoriesTitle.addEventListener('click', ()=>{
+            location.hash = `#categories=${genre.id}-${genre.name}`;
+        });
         const categoryName = document.createTextNode(genre.name);
+        
+        
 
         categoriesPreviewSection.appendChild(categoriesPreviewList);
         categoriesPreviewList.appendChild(categoriesContainer)
@@ -81,3 +92,21 @@ async function getCategoriesPreview(){
 
 getCategoriesPreview();
 getTrendingPreview();
+
+
+
+async function getMoviesByCategory(id) {
+    const { data } = await api('discover/movie', {
+        params: {
+          with_genres: id,
+        },
+      });
+    const movies = data.results;
+    console.log(data);
+
+    createMovies(movies,genericSection);
+
+    
+
+};
+
